@@ -36,7 +36,7 @@ class Board():
     # list of all 8 directions on the board, as (x,y) offsets
     __directions = [(1,1),(1,0),(1,-1),(0,-1),(-1,-1),(-1,0),(-1,1),(0,1)]
 
-    def __init__(self, n, obs = 3):
+    def __init__(self, n):
         "Set up initial board configuration."
 
         self.n = n
@@ -55,6 +55,7 @@ class Board():
         self.pieces[c2][c2] = (-1,0)
     
         # set up random at most obs obstacles
+        obs = self.n // 2
         for i in range(obs):
             a = np.random.randint(self.n)
             b = np.random.randint(self.n)

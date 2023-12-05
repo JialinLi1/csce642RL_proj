@@ -1,63 +1,41 @@
-# Alpha Zero General (any game, any framework!)
-A simplified, highly flexible, commented and (hopefully) easy to understand implementation of self-play based reinforcement learning based on the AlphaGo Zero paper (Silver et al). It is designed to be easy to adopt for any two-player turn-based adversarial game and any deep learning framework of your choice. A sample implementation has been provided for the game of Othello in PyTorch and Keras. An accompanying tutorial can be found [here](http://web.stanford.edu/~surag/posts/alphazero.html). We also have implementations for many other games like GoBang and TicTacToe.
+# Playing Othello-with-Obstacles using Alpha Zero like Algorithm
 
-To use a game of your choice, subclass the classes in ```Game.py``` and ```NeuralNet.py``` and implement their functions. Example implementations for Othello can be found in ```othello/OthelloGame.py``` and ```othello/{pytorch,keras}/NNet.py```. 
+Class project for CSCE 642 Reinforcement Learning by Jialin Li
 
-```Coach.py``` contains the core training loop and ```MCTS.py``` performs the Monte Carlo Tree Search. The parameters for the self-play can be specified in ```main.py```. Additional neural network parameters are in ```othello/{pytorch,keras}/NNet.py``` (cuda flag, batch size, epochs, learning rate etc.). 
+Othello-with-Obstacles: like a normal Othello game, but there are several obstacles scattered throughout the board. You cannot place a piece on cells with obstacles, and they do not contribute toward game rules. They simply stand in your way.
 
+Therefore, you should adjust your strategy to capture the stable cells at not only the corner, but around the obstacles as well (if any)
+
+### Credits
+
+This project is based on Alpha Zero General by Surag Nair and other contributors (2016). It has the games, the MCTS algorithm and the neural networks defined for multiple games. 
+
+I have changed the core logic in the game implementation as well as configurations of the algorithm and neural network to support my version of the game: Othello-with-Obstacles.
+
+### Requirements
+
+It's recommended to use Anaconda to set up an environment for the program. It requires, among others,
+```
+python
+numpy
+torch
+cuda (if applicable)
+tqdm
+coloredlogs
+```
+```torch``` and ```cuda``` needs to be installed using anaconda directly, and others can be installed through ```pip```, which should pull up any other needed packages. If you install these packages manually, it should also install all their dependencies automatically.
+
+### Training and Playing
 To start training a model for Othello:
 ```bash
-python main.py
+python  train.py
 ```
-Choose your framework and game in ```main.py```.
+This will start training using Monte-Carlo tree search. It is set to be running 100 episodes per iteration and 25 MCTS simulations per turn. You can modify ```train.py``` to have it train on a 6x6 board or an 8x8 board.
 
-### Docker Installation
-For easy environment setup, we can use [nvidia-docker](https://github.com/NVIDIA/nvidia-docker). Once you have nvidia-docker set up, we can then simply run:
+However due to constraints of time and resources, I only have one 6x6 model trained. This model is the result of 25 iterations, and while not the most powerful agent yet, it is much more powerful than random or simple greedy players.
+
+To play, do
 ```
-./setup_env.sh
+python play.py
 ```
-to set up a (default: pyTorch) Jupyter docker container. We can now open a new terminal and enter:
-```
-docker exec -ti pytorch_notebook python main.py
-```
-
-### Experiments
-We trained a PyTorch model for 6x6 Othello (~80 iterations, 100 episodes per iteration and 25 MCTS simulations per turn). This took about 3 days on an NVIDIA Tesla K80. The pretrained model (PyTorch) can be found in ```pretrained_models/othello/pytorch/```. You can play a game against it using ```pit.py```. Below is the performance of the model against a random and a greedy baseline with the number of iterations.
-![alt tag](https://github.com/suragnair/alpha-zero-general/raw/master/pretrained_models/6x6.png)
-
-A concise description of our algorithm can be found [here](https://github.com/suragnair/alpha-zero-general/raw/master/pretrained_models/writeup.pdf).
-
-### Citation
-
-If you found this work useful, feel free to cite it as
-
-```
-@misc{thakoor2016learning,
-  title={Learning to play othello without human knowledge},
-  author={Thakoor, Shantanu and Nair, Surag and Jhunjhunwala, Megha},
-  year={2016},
-  publisher={Stanford University, Final Project Report}
-}
-```
-
-### Contributing
-While the current code is fairly functional, we could benefit from the following contributions:
-* Game logic files for more games that follow the specifications in ```Game.py```, along with their neural networks
-* Neural networks in other frameworks
-* Pre-trained models for different game configurations
-* An asynchronous version of the code- parallel processes for self-play, neural net training and model comparison. 
-* Asynchronous MCTS as described in the paper
-
-Some extensions have been implented [here](https://github.com/kevaday/alphazero-general).
-
-### Contributors and Credits
-* [Shantanu Thakoor](https://github.com/ShantanuThakoor) and [Megha Jhunjhunwala](https://github.com/jjw-megha) helped with core design and implementation.
-* [Shantanu Kumar](https://github.com/SourKream) contributed TensorFlow and Keras models for Othello.
-* [Evgeny Tyurin](https://github.com/evg-tyurin) contributed rules and a trained model for TicTacToe.
-* [MBoss](https://github.com/1424667164) contributed rules and a model for GoBang.
-* [Jernej Habjan](https://github.com/JernejHabjan) contributed RTS game.
-* [Adam Lawson](https://github.com/goshawk22) contributed rules and a trained model for 3D TicTacToe.
-* [Carlos Aguayo](https://github.com/carlos-aguayo) contributed rules and a trained model for Dots and Boxes along with a [JavaScript implementation](https://github.com/carlos-aguayo/carlos-aguayo.github.io/tree/master/alphazero).
-* [Robert Ronan](https://github.com/rlronan) contributed rules for Santorini.
-
-Note: Chainer and TensorFlow v1 versions have been removed but can be found prior to commit [2ad461c](https://github.com/suragnair/alpha-zero-general/tree/2ad461c393ecf446e76f6694b613e394b8eb652f).
+and you can specify which version (6x6 or 8x8) as well as who's playing (human against computer or computer vs computer). Currently there is only a model for the 6x6 Othello, and you can play against it. 
