@@ -1,3 +1,14 @@
+'''
+This part of the code has been provided by Surag Nair and others for general Alpha(Go) Zero implementation
+and has been adapted to implement Jialin Li's Othello with Obstacles
+
+Changed to accept an additional dimension of the board
+which represents obstacles
+Changed neural net specifications
+
+Jialin Li
+'''
+
 import sys
 sys.path.append('..')
 from utils import *
@@ -37,6 +48,7 @@ class OthelloNNet(nn.Module):
         self.fc4 = nn.Linear(512, 1)
 
     def forward(self, s):
+        # a single neural net is utilized to output both policy and value
         #                                                           s: batch_size x board_x x board_y    x 2
         s = s.view(-1, 1, self.board_x, self.board_y, 2)                # batch_size x 1 x board_x x board_y    x 2
         s = F.relu(self.bn1(self.conv1(s)))                          # batch_size x num_channels x board_x x board_y

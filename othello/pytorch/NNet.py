@@ -1,3 +1,11 @@
+'''
+This part of the code has been provided by Surag Nair and others for general Alpha(Go) Zero implementation
+and has been adapted to implement Jialin Li's Othello with Obstacles
+
+This file has been changed to accommodate new configurations of OthelloNNet.py
+by Jialin Li
+'''
+
 import os
 import sys
 import time

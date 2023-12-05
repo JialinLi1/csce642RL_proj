@@ -1,3 +1,21 @@
+'''
+This part of the code has been provided by Surag Nair and others for general Alpha(Go) Zero implementation
+and has been adapted to implement Jialin Li's Othello with Obstacles
+
+Added support for obstacles on the board
+Players cannot place pieces on obstacles,
+and they do not contribute to the game rule tests
+
+To remove unwanted linearity, the obstacle is represented 
+as an additional dimension to the board
+
+The neural network has been modified too in order to accept this new configuration
+
+Improved and Augmented by Jialin Li
+Texas A&M University
+Nov 30, 2023
+'''
+
 from __future__ import print_function
 import sys
 sys.path.append('..')
@@ -114,6 +132,7 @@ class OthelloGame(Game):
             print(y, "|", end="")    # print the row #
             for x in range(n):
                 piece = board[y][x]    # get the piece to print
+                piece = tuple(piece)
                 print(OthelloGame.square_content[piece], end=" ")
             print("|")
 
