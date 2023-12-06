@@ -32,7 +32,7 @@ coloredlogs
 ### Training and Playing
 To start training a model for Othello:
 ```
-python  train.py
+python train.py
 ```
 This will start training using Monte-Carlo tree search. It is set to be running 100 episodes per iteration and 25 MCTS simulations per turn. You can modify ```train.py``` to have it train on a 6x6 board or an 8x8 board.
 
